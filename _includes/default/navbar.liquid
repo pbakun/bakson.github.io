@@ -26,9 +26,9 @@
             {% unless page.title == null or page.hide or name_page contains page.title %}
             <li class="separator"> | </li>
             <li>
-                <a class="clear" aria-label="{{ page.title }}" title="{{ page.title }}" href="{{ page.url | relative_url }}">
-                    {% if page.icon %} <i class="fas {{ page.icon }}" aria-hidden="true"></i>
-                    {% else %} {{ page.title }} {% endif%}
+                <a class="clear {% if page.icon %}icon-link{% endif%}" aria-label="{{ page.title }}" title="{{ page.title }}" href="{{ page.url | relative_url }}">
+                    {% if page.icon %} <i class="fas {{ page.icon }}" aria-hidden="true"></i>{% endif%}
+                    <span class="menu-title">{{ page.title }}</span>
                 </a>
             </li>
             {% endunless %}

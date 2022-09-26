@@ -53,6 +53,14 @@
   #theme-toggle {
     cursor: pointer;
   }
+
+  .icon-link {
+    @media (min-width: $break) {
+      .menu-title {
+        display: none;
+      }
+    }
+  }
 }
 
 nav {
