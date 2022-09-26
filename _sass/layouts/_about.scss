@@ -2,7 +2,7 @@
 .about {
     &-section {
         display: flex;
-        @media screen and (max-width: $sm-break) {
+        @media screen and (max-width: $m-break) {
             flex-direction: column;
           }
         > * {
