@@ -16,4 +16,6 @@ I already had some background from University, where I had 2 semesters of C. Als
 #### First project
 Till this day I believe one can learn the most from real live projects. Hundred tutorials are not equal one project. My first was an ASP.NET Core app that would support first contact doctor and change queue numbers, so patient enters the room only when sees given number. I used SignalR to get instant notification on screen placed outside on the corridor. Screens were to be placed above room's door and were connected to Raspberry PI, which had a chromium browser opened with queue view.
 #### First job
-I've managed to quickly find a first job, although it was not what I initially expected. Instead of continue my learning of C# I had to quickly get my hands on ReactJS with purely frontend project.
+I've managed to quickly find my first job, although it was not what I initially expected. Instead of continue my learning of C# I had to quickly get my hands on ReactJS with purely frontend project. Although it wasn't path that I chose, I do not regret. Thanks to that experience I could learn a bit more frontend and move forward from just changing backgrounds and creating ugly forms in HTML. After 8 months I decided it is time to move on and started searching for new opportunities.
+#### Current day
+At the end of 2020 I got a new position, as .NET developer in a swedish agency. Here I could get familiar with one of most popular enterprise .NET-based CMS - Sitecore.

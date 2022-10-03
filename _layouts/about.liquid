@@ -22,7 +22,7 @@ layout: default
       <img src="{{ page.about-img | relative_url }}" alt="about-img" />
     </div>
 
-    <div class="about-text">
+    <div class="about-content">
       {% if page.bootstrap %}
       <div class="bootstrap-iso">
         {% endif %}
@@ -30,6 +30,10 @@ layout: default
         {% if page.bootstrap %}
       </div>
       {% endif %}
+      <h4>My main skills</h4>
+      {% for skill in page.skills %}
+      <span class="about-content_skill">{{ skill }}</span>
+      {% endfor %}
     </div>
   </section>
 
