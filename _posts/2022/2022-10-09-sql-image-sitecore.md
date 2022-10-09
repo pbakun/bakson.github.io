@@ -146,7 +146,6 @@ sqlcmd -Query $sqlCmd
 ```
 
 ## Shortcut
-
-For those who don't want to go through all this steps by yourself I have prepared ready to go scripts [here](#/add-link) or you can pull the image directly from here. 
+For those who don't want to go through all this steps by yourself I have prepared ready to go scripts [here](https://github.com/pbakun/mssql-development).
 
 That would be it for today. Feel free to share this post or DM me on Twitter if you have any questions or just want to chat about it. Till next time.
