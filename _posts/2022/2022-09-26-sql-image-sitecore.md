@@ -112,3 +112,41 @@ WHERE name='TestDb'
 ```
 Not the result we really expected:
 {% include center-img.html images="articles/2022/sql-image-sitecore/Code_S1lvaHqUTV.png" %}
+
+The reason is SQL Server has a default folder for database files storage and it's not `C:\data`. Normally you would change that setting with SSMS, but we would like to have it setup on boot. This can be achieved with adding two additional registry properties and rebooting SQL server. I have decided to add that into `start.ps1` script, as one can decide to change `DATA_PATH` environment variable and I want this path to also be a default database files location.
+
+```powershell
+Write-Verbose "Set default directory for new database files"
+Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL15.MSSQLSERVER\MSSQLServer' -Name DefaultData -Value $DataDirectory
+Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL15.MSSQLSERVER\MSSQLServer' -Name DefaultLog -Value $DataDirectory
+
+restart-service MSSQLSERVER
+Write-Verbose "SQL Server restarted"
+```
+
+Now let's rebuild the image, spin up the again container and run 'create database' query again. This time our query returns:
+
+{% include center-img.html images="articles/2022/sql-image-sitecore/Code_h4ULKXTYrW.png" %}
+
+{% include center-img.html images="articles/2022/sql-image-sitecore/sacha-baron.gif" %}
+
+Here our work is basically done. One thing worth adding is enabling contained databases. During development you sometimes copy databases between different machines and this error pops up while attaching. You can do it by simply adding couple more lines of code in `start.ps1`:
+
+```powershell
+$sqlCmd = "EXEC sp_configure 'show advanced', 1 `
+GO `
+RECONFIGURE `
+GO `
+EXEC sp_configure 'contained database authentication', 1 `
+GO `
+RECONFIGURE `
+GO"
+
+sqlcmd -Query $sqlCmd
+```
+
+## Shortcut
+
+For those who don't want to go through all this steps by yourself I have prepared ready to go scripts [here](#/add-link) or you can pull the image directly from here. 
+
+That would be it for today. Feel free to share this post or DM me on Twitter if you have any questions or just want to chat about it. Till next time.
