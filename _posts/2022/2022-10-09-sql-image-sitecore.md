@@ -9,7 +9,7 @@ Using SQL Server in docker may not be the best idea for production environment, 
 
 <!--more-->
 
-This article was inspired by Sitecore lack of official SQL Server 2019 docker images for development, although it could be useful to anyone dealing with MS SQL with windows containers. Before Sitecore 10+, if you wanted to use docker, you were forced to build your own images from community supported [repository](https://github.com/Sitecore/docker-images). When in need, or just out of curiosity, one could easily customize what are used for based images, entrypoints, scripts run in the meantime. From versions 10+ Sitecore provides officially supported images, which is awesome, but also makes customization a bit harder.
+This article was inspired by Sitecore lack of official SQL Server 2019 docker images for development, although it could be useful to anyone dealing with MS SQL on windows containers. Before Sitecore 10+, if you wanted to use docker, you were forced to build your own images from community supported [repository](https://github.com/Sitecore/docker-images). When in need, or just out of curiosity, one could easily customize what are used for based images, entrypoints, scripts run in the meantime. From versions 10+ Sitecore provides officially supported images, which is awesome, but also makes customization a bit harder.
 
 ### Root cause
 When my team upgraded from Sitecore 9.2 to 9.3 we decided to go with docker images for development. There are many advantages of that approach, although it required some extra work on our side. One of the first issues was SQL database version used. We used our on&#8209;premise development setup with newest (at that time) SQL Server, but with mentioned earlier repo we could only build 2017 image. The easiest would be to go with it, but if you ever tried to downgrade your database you probably not it's pretty much impossible (if I'm wrong please let me know).
@@ -54,7 +54,7 @@ services:
       - "14330:1433"
 ```
 
-Considering copying files from windows container to host system doesn't work too good I will use an awesome VS Code [extension](https://github.com/microsoft/vscode-docker) to get into Sitecore's filesystem and extract its `start.ps1` script. Let's run our docker-compose.yml.
+Taking into consideration that copying files from windows container to host system doesn't work too good I will use an awesome VS Code [extension](https://github.com/microsoft/vscode-docker) to get into Sitecore's filesystem and extract its `start.ps1` script. Let's run our `docker-compose.yml`.
 
 ```
 docker-compose up -d
@@ -91,15 +91,15 @@ Note that you need to download installation files:
 ```docker
 docker build -t sitecore-mssql-developer-2019 -f dockerfile_1 .
 ```
-The build will take a while, but when it'll finish replace image name to the newly built one. If you have any database files you could put them in `volume` folder, otherwise you have to trust my word that as soon as container starts database will attach.
+The build will take a while, but when it'll finish replace image name in `docker-compose.yml` with the newly built one. If you have any database files you could put them in `volume` folder, otherwise you have to trust my word that as soon as container starts database will attach.
 
-There are plenty of tools you could use to connect to database, eg. SSMS or another [VS Code extension](https://github.com/Microsoft/vscode-mssql). I will stick with VS Code here. Using below connection string I'm connecting to server and bum... My database is attached.
+There are plenty of tools you could use to connect to database, eg. SSMS or another [VS Code extension](https://github.com/Microsoft/vscode-mssql). I will stick with VS Code here. Using connection string below I'm connecting to server and bum... My database is attached.
 ```
 Data Source=tcp:localhost,14330;User ID=sa;Password=Password12345;
 ```
 {% include aligner.html images="articles/2022/sql-image-sitecore/Code_YrLQHAHRTB.png,articles/2022/sql-image-sitecore/Code_OxhjAa1Ti8.png" %}
 
-Looks like all the work is done, but there is one more thing left to do. If you try to create a new database you'll notice that the files will not land in you `C:\data` (inside container) folder. Try simple SQL query:
+Looks like all the work is done, but there is one more thing left to do. If you try to create a new database you'll notice that the files will not land in your `C:\data` (inside container) folder. Try simple SQL query:
 
 ```sql
 CREATE DATABASE TestDb;
@@ -113,7 +113,7 @@ WHERE name='TestDb'
 Not the result we really expected:
 {% include center-img.html images="articles/2022/sql-image-sitecore/Code_S1lvaHqUTV.png" %}
 
-The reason is SQL Server has a default folder for database files storage and it's not `C:\data`. Normally you would change that setting with SSMS, but we would like to have it setup on boot. This can be achieved with adding two additional registry properties and rebooting SQL server. I have decided to add that into `start.ps1` script, as one can decide to change `DATA_PATH` environment variable and I want this path to also be a default database files location.
+The reason is SQL Server has a default folder for database files storage and it's not `C:\data`. Normally you would change that setting with SSMS, but we would like to have it setup on boot. This can be achieved with adding two additional registry properties and rebooting SQL server. I have decided to add that into `start.ps1` script, as one can decide to change `DATA_PATH` environment variable and I want this path to always be a default database files location.
 
 ```powershell
 Write-Verbose "Set default directory for new database files"
@@ -124,13 +124,13 @@ restart-service MSSQLSERVER
 Write-Verbose "SQL Server restarted"
 ```
 
-Now let's rebuild the image, spin up the again container and run 'create database' query again. This time our query returns:
+Now let's rebuild the image, spin up the container again and run our SQL query again. This time it returns:
 
 {% include center-img.html images="articles/2022/sql-image-sitecore/Code_h4ULKXTYrW.png" %}
 
 {% include center-img.html images="articles/2022/sql-image-sitecore/sacha-baron.gif" %}
 
-Here our work is basically done. One thing worth adding is enabling contained databases. During development you sometimes copy databases between different machines and this error pops up while attaching. You can do it by simply adding couple more lines of code in `start.ps1`:
+Here our work is basically done. One thing worth adding is enabling contained databases. During development you sometimes copy files between different machines and this error can pop up when attaching database. You can do it by simply adding couple more lines of code in `start.ps1`:
 
 ```powershell
 $sqlCmd = "EXEC sp_configure 'show advanced', 1 `
@@ -148,4 +148,4 @@ sqlcmd -Query $sqlCmd
 ## Shortcut
 For those who don't want to go through all this steps by yourself I have prepared ready to go scripts [here](https://github.com/pbakun/mssql-development).
 
-That would be it for today. Feel free to share this post or DM me on Twitter if you have any questions or just want to chat about it. Till next time.
+That would be it for today. Feel free to share this post or DM me on Twitter if you have any questions or just want to chat about it. Till the next one.
