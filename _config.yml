@@ -4,7 +4,7 @@ url: "https://bakson.dev"
 
 # THEME-SPECIFIC CONFIGURATION
 title: bakson.dev                                    # site's title
-description: "A website with blog posts and pages"      # used by search engines
+description: "Developer's blog mainly about .NET and DevOps stuff"      # used by search engines
 # avatar: assets/img/triangle.png                         # Empty for no avatar in navbar
 favicon: assets/favicon.ico                             # Icon displayed in the tab
 
@@ -52,7 +52,7 @@ collections:
 sass:
   style: compressed
 plugins: [jekyll-paginate, jekyll-seo-tag, jekyll-feed]
-exclude: [".jekyll-cache", ".jekyll-metadata", ".idea", "vendor/*", "assets/node_modules/*"]
+exclude: [".jekyll-cache", ".jekyll-metadata", ".idea", "vendor/*", "assets/node_modules/*", "_posts/samples"]
 
 # theme: type-on-strap                                  # if using the theme as a jekyll theme gem
 remote_theme: sylhare/Type-on-Strap                     # If using as a remote_theme in github

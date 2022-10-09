@@ -1,7 +1,7 @@
 ---
 layout: post
 title: >
-    Blogging with title 
+    Blogging with title
 tags: [Test, Image]
 ---
 

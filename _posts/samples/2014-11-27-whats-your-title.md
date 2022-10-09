@@ -28,4 +28,4 @@ Well that's due to some jekyll limitation:
 > You **can't** set the **title** to the **empty string**
 
 The title is used elsewhere than inside the post, for example in the blog page that list this post.
-An empty title would break those pages and possibly prevents jekyll to render your blog. 
+An empty title would break those pages and possibly prevents jekyll to render your blog.
