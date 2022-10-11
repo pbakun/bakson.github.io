@@ -1,17 +1,19 @@
 /* TYPOGRAPHY */
-$font-family-main: 'Lato','Source Sans Pro', Helvetica, Arial, sans-serif;
-$font-family-headings: 'Lato','Source Sans Pro', Helvetica, Arial, sans-serif;
-$font-family-logo: 'Lato','Source Sans Pro', Helvetica, Arial, sans-serif;
+$font-family-main: 'Figtree','Source Sans Pro', Helvetica, Arial, sans-serif;
+$font-family-headings: 'Figtree','Source Sans Pro', Helvetica, Arial, sans-serif;
+$font-family-paragraphs: 'Source Serif 4', sans-serif;
 $font-size: 1.125em;
 
-$monospace: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, sans-serif !default;
+$monospace: 'Source Code Pro', Consolas, Lucida Console, Menlo, Monaco, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, sans-serif !default;
 $font-size-code: 0.85em !default;
 $font-height-code: 1.3em !default;
 $border-radius: 4px !default;
 
+$font-family-logo: $monospace;
+
 /* PADDING */
-$padding-x-large: 23%;
-$padding-large: 9%;
+$padding-x-large: 25%;
+$padding-large: 12%;
 $padding-medium: 6%;
 $padding-small: 4%;
 $padding-x-small: 3%;

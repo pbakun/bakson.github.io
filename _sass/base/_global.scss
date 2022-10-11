@@ -28,6 +28,10 @@ body {
   word-wrap: break-word;
 }
 
+p {
+  font-family: $font-family-paragraphs;
+}
+
 h1,
 h2,
 h3,

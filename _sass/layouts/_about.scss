@@ -16,6 +16,9 @@
 
     &-content {
         flex: 2 1 0;
+        @media (min-width: $l-break) {
+            flex: 1 1 0;
+        }
         padding: 0 10px;
         text-align: justify;
 

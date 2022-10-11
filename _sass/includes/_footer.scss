@@ -7,6 +7,10 @@
   color: var(--meta);
   font-size: 0.9em;
 
+  .text {
+    font-family: $font-family-main;
+  }
+
   .footer-icons {
     ul {
       list-style: none;
@@ -21,7 +25,7 @@
       }
 
       a:hover {
-        .fa-circle {
+        .fa-square {
           filter: brightness(0.85);
         }
       }
