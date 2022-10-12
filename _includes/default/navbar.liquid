@@ -26,7 +26,7 @@
             {% unless page.title == null or page.hide or name_page contains page.title %}
             <li class="separator"> | </li>
             <li>
-                <a class="clear {% if page.icon %}icon-link{% endif%}" aria-label="{{ page.title }}" title="{{ page.title }}" href="{{ page.url | relative_url }}">
+                <a class="clear {% if page.icon %}icon-link{% endif%} {{ page.nav-class }}" aria-label="{{ page.title }}" title="{{ page.title }}" href="{{ page.url | relative_url }}">
                     {% if page.icon %} <i class="fas {{ page.icon }}" aria-hidden="true"></i>{% endif%}
                     <span class="menu-title">{{ page.title }}</span>
                 </a>
@@ -37,7 +37,19 @@
 
         {% if site.color_theme == 'auto' %}
         <li class="separator"> | </li>
-        <li><a id="theme-toggle" title="Theme toggle" aria-label="Theme toggle" onclick="themeToggle()"></a></li>
+        <li class="theme-toggle">
+            {% comment %} <a id="theme-toggle" title="Theme toggle" aria-label="Theme toggle" onclick="themeToggle()"></a> {% endcomment %}
+            <svg class="theme-toggle_icon theme-toggle_icon_light" xmlns="http://www.w3.org/2000/svg" width="25.064" height="25.064" viewBox="0 0 25.064 25.064">
+                <path id="Icon_metro-sun2" d="M17.995,10.6a6.748,6.748,0,1,0,6.748,6.748A6.756,6.756,0,0,0,17.995,10.6Zm0-1.928a.963.963,0,0,0,.964-.964V5.784a.964.964,0,1,0-1.928,0V7.712A.963.963,0,0,0,17.995,8.676Zm0,17.352a.963.963,0,0,0-.964.964V28.92a.964.964,0,1,0,1.928,0V26.992A.964.964,0,0,0,17.995,26.028Zm7.5-14.812,1.363-1.363A.964.964,0,0,0,25.491,8.49L24.128,9.854a.964.964,0,0,0,1.363,1.363Zm-15,12.272L9.133,24.852A.964.964,0,1,0,10.5,26.215l1.363-1.363A.964.964,0,0,0,10.5,23.489ZM9.319,17.352a.964.964,0,0,0-.964-.964H6.427a.964.964,0,1,0,0,1.928H8.355A.963.963,0,0,0,9.319,17.352Zm20.244-.964H27.635a.964.964,0,0,0,0,1.928h1.928a.964.964,0,0,0,0-1.928ZM10.495,11.217a.964.964,0,1,0,1.363-1.363L10.495,8.49A.964.964,0,0,0,9.132,9.854Zm15,12.27a.964.964,0,0,0-1.363,1.363l1.363,1.363a.964.964,0,0,0,1.363-1.363Z" transform="translate(-5.463 -4.82)"/>
+            </svg>
+            <label class="theme-toggle_switch">
+                <input id="theme-input" type="checkbox" class="theme-toggle_checkbox" onclick="themeToggle()">
+                <span class="theme-toggle_slider"></span>
+            </label>
+            <svg class="theme-toggle_icon theme-toggle_icon_dark" xmlns="http://www.w3.org/2000/svg" width="13.087" height="13.088" viewBox="0 0 13.087 13.088">
+                <path id="Icon_metro-moon2" d="M17.518,17.83a6.731,6.731,0,0,1-1.568-7.022A6.748,6.748,0,1,0,24.538,19.4a6.729,6.729,0,0,1-7.021-1.568Z" transform="translate(-11.451 -10.808)" opacity="0.3"/>
+            </svg>
+        </li>
         {% endif %}
     </ul>
 

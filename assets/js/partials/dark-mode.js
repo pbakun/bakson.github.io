@@ -43,5 +43,7 @@ window.onload = function bootstrapTheme() {
         // Load theme
         let sessionPrefers = currentTheme()
         setMode(sessionPrefers ? sessionPrefers : 'light')
+        if(sessionPrefers === 'dark')
+            document.getElementById("theme-input").checked = 'true'
     }
 }

@@ -9,11 +9,11 @@ description: "Developer's blog mainly about .NET and DevOps stuff"      # used b
 favicon: assets/favicon.ico                             # Icon displayed in the tab
 
 # Header and footer text
-header_text: Hi, I'm Piotr. <br /> Welcome to my personal blog/docs.
+header_text: ""
 header_feature_image: assets/img/header/triangular.jpeg
 header_feature_image_responsive: true
 footer_text: >
-  <a href="/about">Piotr Bakun</a> © 2022.<br/>
+  <a href="/about">Piotr Bakun</a> © 2022.
   Powered by <a href="https://jekyllrb.com/">Jekyll</a>
 
 # Blog
@@ -52,7 +52,14 @@ collections:
 sass:
   style: compressed
 plugins: [jekyll-paginate, jekyll-seo-tag, jekyll-feed]
-exclude: [".jekyll-cache", ".jekyll-metadata", ".idea", "vendor/*", "assets/node_modules/*", "_posts/samples"]
+exclude:
+  - ".jekyll-cache"
+  - ".jekyll-metadata"
+  - ".idea"
+  - "vendor/*"
+  - "assets/node_modules/*"
+  - "_posts/samples"
+  - "_portfolio"
 
 # theme: type-on-strap                                  # if using the theme as a jekyll theme gem
 remote_theme: sylhare/Type-on-Strap                     # If using as a remote_theme in github

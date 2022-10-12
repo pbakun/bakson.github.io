@@ -149,6 +149,9 @@ header {
   h4 { color: var(--h4); }
   h5 { color: var(--h5); }
   h6 { color: var(--h6); }
+  p {
+    font-family: $font-family-paragraphs;
+  }
 
   a {
     :visited {

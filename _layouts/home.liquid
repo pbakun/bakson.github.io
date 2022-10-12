@@ -3,8 +3,9 @@ layout: default
 ---
 
 <div class="home">
+    {% assign image = site.header_feature_image | relative_url | split: '.' %}
     <style scoped>
-        {% assign image = site.header_feature_image | relative_url | split: '.' %}
+        
         .call-out_img {
             background-image: url('{{ image | join: '.' }}');
         }
@@ -22,7 +23,8 @@ layout: default
         {% endif %}
     </style>
     <div id="main" class="call-out call-out_img">
-        <h1> {{ site.header_text | default: "Change <code>header_text</code> in <code>_config.yml</code>"}} </h1>
+        <h1> {{ site.header_text | default: "Hi I'm Piotr <br /> Welcome to my docs"}} </h1>
+        {% comment %} <img src="{{ image | join: '.' }}" alt="header-img" /> {% endcomment %}
     </div>
 
     {% include blog/blog.liquid %}
