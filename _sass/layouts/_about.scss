@@ -1,8 +1,15 @@
 
 .about {
+    &-container {
+        padding: $padding-x-small $padding-x-large;
+        @media (max-width: $xl-break) {
+            padding: $padding-x-small ($padding-large);
+        }
+    }
+
     &-section {
         display: flex;
-        @media screen and (max-width: $m-break) {
+        @media screen and (max-width: $break) {
             flex-direction: column;
           }
         > * {
@@ -12,6 +19,11 @@
 
     &-img {
         padding-top: 5px;
+        img {
+            @media(max-width: $break) {
+                padding: 0;
+            }
+        }
     }
 
     &-content {
