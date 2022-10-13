@@ -14,7 +14,7 @@
 }
 
 .site-header {
-  padding: 2% 2% 1% 2%;
+  padding: 1.5% 2% 1% 2%;
   background: var(--background);
   display: inline-block;
   width: 100%;
@@ -30,12 +30,6 @@
 
   a {
     color: var(--header-link);
-
-    // &.search {
-    //   color: white;
-    //   background: var(--link);
-    //   padding: 5px;
-    // }
   }
 
   .avatar {
@@ -54,9 +48,11 @@
     font-family: $font-family-logo;
     font-size: 1.3em;
     color: var(--link);
+
     &::after {
       content: '>'
     }
+
     &::before {
       content: '<'
     }
@@ -70,6 +66,19 @@
     @media (min-width: $break) {
       .menu-title {
         display: none;
+      }
+    }
+
+    &__search {
+      background: var(--link);
+      padding: 3px 5px 0px 5px;
+      border: 1px solid var(--link);
+      border-radius: 3px;
+      color: var(--selection);
+      transition: transform .2s;
+
+      &:hover {
+        transform: scale(1.1);
       }
     }
   }
@@ -87,11 +96,17 @@ nav {
     line-height: 1.5;
     float: right;
     text-align: right;
-    display: block;
+    display: flex;
+    align-items: center;
+
+    @media (max-width: $break) {
+      display: block;
+      flex-direction: column;
+    }
   }
 
   li {
-    display: inline;
+    display: flex;
     float: left;
     margin-right: 0.4em;
   }
@@ -103,9 +118,7 @@ nav {
 
     &#pull {
       i {
-        margin-top: 13px;
-        margin-right: 10px;
-        float: right;
+        margin: 5px 10px;
       }
 
     }
@@ -116,10 +129,11 @@ nav {
 /* ---- Responsive ---- */
 
 @media (min-width: $break) {
-  a#pull {
+  .mobile-nav {
     display: none;
   }
 }
+
 
 @media screen and (max-width: $break) {
   .site-header {
@@ -173,6 +187,15 @@ nav {
         display: block;
       }
 
+      .icon-link__search {
+        display: none;
+      }
+    }
+
+    .mobile-nav {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 10px;
     }
   }
 }
@@ -182,6 +205,7 @@ nav {
   display: flex;
   align-items: center;
   justify-content: center;
+
   &_icon {
     padding: 0;
 
@@ -205,7 +229,7 @@ nav {
     width: 48px;
     height: 24px;
 
-    input { 
+    input {
       opacity: 0;
       width: 0;
       height: 0;
@@ -239,7 +263,7 @@ nav {
     }
   }
 
-  &_checkbox:checked + &_slider:before {
+  &_checkbox:checked+&_slider:before {
     -webkit-transform: translateX(24px);
     -ms-transform: translateX(24px);
     transform: translateX(24px);

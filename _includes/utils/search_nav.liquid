@@ -1,0 +1,13 @@
+
+{% assign search_page = site.pages | where: "title", "Search" | first %}
+{% if search_page != null %}
+    {% comment %} <li> {% endcomment %}
+        <a class="clear {% if search_page.icon %}icon-link{% endif%} icon-link__search" aria-label="{{ search_page.title }}" title="{{ search_page.title }}" href="{{ search_page.url | relative_url }}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20">
+                <g id="Icon_feather-search" data-name="Icon feather-search" transform="translate(-3 -3)">
+                    <path id="Union_1" data-name="Union 1" d="M-1957.207,24.207l-3.675-3.675A8.931,8.931,0,0,1-1966.5,22.5a8.94,8.94,0,0,1-6.364-2.636A8.94,8.94,0,0,1-1975.5,13.5a8.94,8.94,0,0,1,2.636-6.364A8.94,8.94,0,0,1-1966.5,4.5a8.941,8.941,0,0,1,6.364,2.636A8.941,8.941,0,0,1-1957.5,13.5a8.931,8.931,0,0,1-1.967,5.618l3.675,3.675a1,1,0,0,1,0,1.415,1,1,0,0,1-.707.292A.994.994,0,0,1-1957.207,24.207ZM-1973.5,13.5a7.008,7.008,0,0,0,7,7,6.976,6.976,0,0,0,4.87-1.976,1,1,0,0,1,.073-.081,1.022,1.022,0,0,1,.081-.073,6.976,6.976,0,0,0,1.976-4.87,7.008,7.008,0,0,0-7-7A7.008,7.008,0,0,0-1973.5,13.5Z" transform="translate(1978.5 -1.5)" fill="#fff"/>
+                </g>
+            </svg>
+        </a>
+    {% comment %} </li> {% endcomment %}
+{% endif %}
