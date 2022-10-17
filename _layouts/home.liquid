@@ -3,30 +3,31 @@ layout: default
 ---
 
 <div class="home">
-    {% assign image = site.header_feature_image | relative_url | split: '.' %}
-    <style scoped>
-        
-        .call-out_img {
-            background-image: url('{{ image | join: '.' }}');
-        }
-        {% if site.header_feature_image_responsive %}
-        @media screen and (max-width: 768px) {
-            .call-out_img {
-                background-image: url('{{ image[0] | append: '-medium.' | append: image[1] | default: image}}');
-            }
-        }
-        @media screen and (max-width: 576px) {
-            .call-out_img {
-                background-image: url('{{ image[0] | append: '-small.' | append: image[1] }}');
-            }
-        }
-        {% endif %}
-    </style>
-    <div id="main" class="call-out call-out_img">
-        <h1> {{ site.header_text | default: ""}} </h1>
-        {% comment %} <img src="{{ image | join: '.' }}" alt="header-img" /> {% endcomment %}
-    </div>
+  {% assign image = site.header_feature_image | relative_url | split: '.' %}
+  <style scoped>
 
-    {% include blog/blog.liquid %}
+    .call-out_img {
+      background-image: url('{{ image | join: '.' }}');
+    }
+    {% if site.header_feature_image_responsive %}
+      @media screen and (max-width: 768px) {
+        .call-out_img {
+          background-image: url('{{ image[0] | append: '-medium.' | append: image[1] | default: image}}');
+        }
+      }
+      @media screen and (max-width: 576px) {
+        .call-out_img {
+          background-image: url('{{ image[0] | append: '-small.' | append: image[1] }}');
+        }
+      }
+    {% endif %}
+  </style>
+  <div id="main" class="call-out call-out_img">
+    <h1>
+      {{ site.header_text | default: ""}}
+    </h1>
+  </div>
+
+  {% include blog/blog.liquid %}
 
 </div>

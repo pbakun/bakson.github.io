@@ -10,7 +10,7 @@ favicon: assets/favicon.ico                             # Icon displayed in the 
 
 # Header and footer text
 header_text: "Hi, I'm Piotr<br /> Welcome to my docs!"
-header_feature_image: assets/img/header/triangular.jpeg
+header_feature_image: assets/img/header/keyboard.webp
 header_feature_image_responsive: true
 footer_text: >
   <a href="/about">Piotr Bakun</a> © 2022.
