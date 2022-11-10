@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Create PDF from HTML Template using PLaywright.NET
+title: Create PDF from HTML Template using Playwright.NET
 tags: [docker, dotnet, playwright]
 excerpt_separator: <!--more-->
 ---
