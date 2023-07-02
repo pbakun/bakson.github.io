@@ -126,7 +126,7 @@ jobs:
 
 ### Deployment
 
-When it comes to deploying to Azure WebApp without introducing additional dependencies, the choice of tools is crucial. Initially, I attempted to utilize the Go SDK for Azure; however, I encountered limitations when it came to deploying from a zip file to Azure WebApp. This approach would have required the external dependency of MSDeploy, commonly available in Visual Studio, to accomplish the task effectively. Avoiding the introduction additional dependencies became a priority, leading me to explore alternative solutions.
+When it comes to deploying to Azure WebApp without introducing additional dependencies, the choice of tools is crucial. Initially, I attempted to utilize the Go SDK for Azure; however, I encountered limitations when it came to deploying from a zip file to Azure WebApp. This approach would have required the external dependency of MSDeploy, commonly available in Visual Studio, to accomplish the task effectively. Avoiding the introduction of additional dependencies became a priority, leading me to explore alternative solutions.
 
 Given my familiarity with PowerShell from working in a .NET environment, I decided to leverage the Azure PowerShell capabilities. The Azure PowerShell module provides extensive functionalities for interacting with Azure resources and enables seamless deployments. With that in mind I turned to the Azure PowerShell Docker image as my deployment pipeline base environment.
 
