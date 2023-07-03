@@ -2,6 +2,7 @@
 layout: post
 title: CI/CD with Dagger and Azure
 tags: [devops, Azure, Dagger]
+feature-img: "assets/img/articles/2023/deploy-azure-dagger/header.webp"
 excerpt_separator: <!--more-->
 ---
 
