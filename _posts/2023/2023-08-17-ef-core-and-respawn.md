@@ -6,13 +6,13 @@ tags: [dotnet, testing, database]
 excerpt_separator: <!--more-->
 ---
 
-Integration tests are advertised as the best choice if you are to have only one type of tests. They are a&nbsp;powerful tool that can test the full scope of application, but keeping them clean and easy-to-read cam bring challenges. One of which is how to keep the test database state clean.
+Integration tests are advertised as the best choice if you are to have only one type of tests. They are a&nbsp;powerful tool that can test the full scope of application, but keeping them clean and easy-to-read can bring challenges. One of which is how to keep the test database state clean.
 
 <!--more-->
 
 ## The problem overview
 
-Integration tests are meant to check how the application behaves as a whole (including some IOs). Almost every program utilizes database, therefore this is one of the factors a developer wants to test against. In&nbsp;order for test to serve also as documentation the data should be seeded before each execution. At the end of the check after assertions data should be cleaned, otherwise the next test in sequence would be polluted with residue from the previous one.
+Integration tests serve the purpose of examining how an entire application functions, which includes various inputs and outputs. Since databases are commonly used in most programs, testing against them is crucial. To make these tests informative like documentation, the test data needs to be set up before each execution. Once the testing and confirming part is done, it's important to clean up the data, otherwise the next test in sequence would be polluted with residue from the previous one.
 
 Keeping test setup clean may introduce additional overhead when reverting database to its initial state. It can be done manually with truncating tables or simply deleting the data added at the beginning of the test, but this adds a lot of boilerplate code and tedious work. Someone has to put in the time and effort to write code that takes care of the cleanup process after each test.
 
@@ -20,11 +20,11 @@ Keeping test setup clean may introduce additional overhead when reverting databa
 
 Jimmy Bogard struggled with this problem and decided to help us all. He developed a solution which cleans a database state on demand - [Respawn](https://github.com/jbogard/Respawn). The repository's readme explains pretty well how to use it when with standard ADO.NET connection, but things get a bit more complicated when it comes to widely used Entity Framework.
 
-In the example for database I used PostgreSQL hosted with [Testcontainers](https://testcontainers.com/). This tool spins up Docker container automatically from any given image on test application startup. There are also specific database [modules](https://dotnet.testcontainers.org/modules/) available, but in my example I used PostgreSQL with postgis extension. For this configuration there is no module available, thus I used Docker image directly.
+In the example for database I used PostgreSQL hosted with [Testcontainers](https://testcontainers.com/). This tool enables to spin up Docker container automatically from any given image on test application startup. There are also specific database [modules](https://dotnet.testcontainers.org/modules/) available, but in my example I used PostgreSQL with PostGIS extension. For this configuration there is no module available, thus I used Docker image explicitly.
 
 #### Setup
 
-Let's start with defining the `WebApplicationFactory` that will be using with xUnit's `CollectionFixture`. First thing necessary is the database setup. It couldn't be easier. All you need is to build the container and define a wait strategy. After the container is ready the execution moves on to launch the test application fixture. The `CustomWebApplicationFactory` implements `IAsyncLifetime`, which has 2 methods: `InitializeAsync` and `DisposeAsync`. I think the names are self-explanatory. On initialization which runs just after constructor the Testcontainer is started. After test execution finishes it needs to be cleaned up by removing Testcontainer.
+Let's begin with defining the `WebApplicationFactory` that will be used with xUnit's `CollectionFixture`. The primary step involves setting up the database. It couldn't be easier. All you need is to build the container and define a wait strategy. After the container is ready the execution moves on to launch the test application fixture. The `CustomWebApplicationFactory` implements `IAsyncLifetime`, which has 2 methods: `InitializeAsync` and `DisposeAsync`. As their names suggest, the former is responsible for initialization, which takes place shortly after the constructor is called. During initialization, the Testcontainer is initiated. Upon completion of collection fixture lifetime the container is stopped and removed.
 
 ```csharp
 public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStartup>, IAsyncLifetime where TStartup : class
@@ -72,7 +72,10 @@ public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStar
 
 The fixture will take the same setup as our main application. It is after all the same program, only slightly modified for testing purposes.
 
-The first thing is to remove existing `ApplicationDbContext` which uses connection string to real database, taken from configuration (at least it should take if from there). Immediately after that the new infrastructure is setup, the only difference is new connection string to our Testcontainer. The next step is to create a `ServiceScope` and retrieve context added couple lines above. The `DatabaseFacade` is stored in a private property, since it is used inside `GetOpenedDbConnectionAsync` method, which ensured that the connection to database is open. It will provide us the connection to the database, so it doesn't have to be passed from each test's scope. At this point Entity Framework migrations can be executed to setup the database schema. The last step is to initialize Respawn, this must be done only after database is seeded with complete schema.
+The first thing is to remove existing `ApplicationDbContext`, which takes connection string to real database from configuration (at least it should take if from there). Immediately after the slightly modified infrastructure is set up. The only difference from original application is database replacement. If necessary more modules can be modified, eg. communication with external APIs.
+
+Following this, a `ServiceScope` is built allowing us to access the context added a few lines earlier. The `DatabaseFacade` is stored in a private property, since it is used inside `GetOpenedDbConnectionAsync` method, which ensured that the connection to database is open. It will provide us the connection to the database, so it doesn't have to be passed from each test's scope.
+At this point Entity Framework migrations can be executed to setup the database schema. Last but not least is Respawn initialization, this must be done only after database is seeded with completed schema.
 
 ```csharp
 protected override void ConfigureWebHost(IWebHostBuilder builder)
@@ -98,9 +101,9 @@ protected override void ConfigureWebHost(IWebHostBuilder builder)
 }
 ```
 
-Respawner itself is setup only once. Using an opened connection it can be instantiated, additionally in the `RespawnerOptions` I pass adapter for the database (adjust to the one you use) and set which tables should be excluded from cleanup. For Entity Framework its the `__EFMigrationHistory`, which is used to track if the database schema is up to date with code. In my case the is one more table, but this is specific for the PostgreSQL flavor I'm using - postgis.
+Respawner itself is set up only once. Using an opened connection it can be instantiated, additionally in the `RespawnerOptions` I pass adapter for the database (adjust to the one you use) and define which tables should be excluded from cleanup. For Entity Framework its the `__EFMigrationHistory`, which is used to track if the database schema is up to date with code. In my case there is one more table, but this is specific for the PostgreSQL flavor I'm using - PostGIS.
 
-The other method will be called after test execution. It will instruct Respawn to clean the database.
+The other method will be called after test execution. It will instruct Respawner to clean the database.
 
 ```csharp
 private Respawner respawner = default!;
@@ -135,7 +138,7 @@ private async Task<DbConnection> GetOpenedDbConnectionAsync()
 }
 ```
 
-To limit code duplications the `IntegrationTest` abstraction is defined. Similarly to `CustomWebApplicationFactory` it implements `IAsyncLifetime`. On the `DisposeAsync` method `ResetDatabaseAsync` from `CustomWebApplicationFactory` is called to restart the database to configured state with Respawn.
+To limit code duplications the `IntegrationTest` abstraction is defined. Similarly to `CustomWebApplicationFactory` it implements `IAsyncLifetime`. On the `DisposeAsync` method `ResetDatabaseAsync` from `CustomWebApplicationFactory` is called to restart the database to initial state.
 
 One more important thing is that new `ApplicationDbContext` is created. The main purpose is not to use the same context in tested application and test itself. It provides more separation and simulates real life situation better. Additionally `QueryTrackingBehavior` is set to `NoTracking` so the test won't care that much about the data mocked before calling application's endpoint.
 
@@ -173,7 +176,7 @@ public abstract class IntegrationTest : IAsyncLifetime
 }
 ```
 
-The test is attributed with `Collection` of name `IntegrationTestCollection`, meaning it will use this collection unless otherwise instructed. The derived class will inherit this attribute, but it can also have its own with different collection, which may use another `CustomWebApplicationFactory`.
+The test is attributed with `Collection` of name `IntegrationTestCollection`, meaning it will use this collection unless otherwise instructed. The derived class will inherit this attribute, but it can also have its own with different collection called, which may use another `CustomWebApplicationFactory`.
 
 The `CollectionDefinition` is an empty class, which only implements interface `ICollectionFixture<WebApplicationFactory<TProgram>`. This part bounds `CustomWebApplicationFactory` with `IntegrationTest` and passes the factory in the test constructor.
 
@@ -186,7 +189,7 @@ public class IntegrationTestCollection : ICollectionFixture<CustomWebApplication
 }
 ```
 
-#### Test
+### Test the test!
 
 Finally sample test utilizing previously made setup:
 
@@ -224,10 +227,33 @@ public class UpdateCity : IntegrationTest
 ```
 
 Nothing fancy in the test itself. There are 3 steps:
-- arrange - setup everything prior testing the system: write necessary data into database, mock services, prepare inputs
-- act - execute SUT (system under test); in this case call application's endpoint
+- arrange - setup everything prior testing the system: write necessary data into database, define mocks, prepare inputs
+- act - execute SUT (system under test); in this case call API endpoint
 - assert - verify outcome: response, database state
 
 After test method is finished `IDisposeAsync` from derived `IntegrationTest` is called and database is restarted to clean state.
 
-In the [repository]() the full project can be found. It contains more tests including adding, listing and removing data. Without clearing the database each time most of them would fail due to data inconsistency.
+### Continuous integration
+
+The tests can be used locally, mainly during refactoring or bug fixing, but it's even more important to implement proper CI workflow. For the example I used Github Action with only 2 steps.
+
+```yml
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET Core SDK
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '7.0.x'
+    - name: Test
+      run: |
+        cd tests/CitiesApp.IntegrationTests
+        dotnet test
+```
+
+The Testcontainer worked without any additional setup. The case may be a bit different when using self-hosted runner, but it all narrows up to set correct permission for docker socket access.
+
+You can find the complete project and further details in the [repository](). It contains a sample CQRS application and series of tests for entity addition, listing, and removal. Without clearing the database each time most of them would fail due to data inconsistency.
+
