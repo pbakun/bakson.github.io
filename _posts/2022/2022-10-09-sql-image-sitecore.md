@@ -1,7 +1,7 @@
 ---
 layout: post
 title: SQL Server 2019 docker image for Sitecore
-tags: [docker, sql, Sitecore]
+tags: [docker, sql, Sitecore, database]
 excerpt_separator: <!--more-->
 ---
 
