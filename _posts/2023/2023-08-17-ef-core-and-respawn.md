@@ -255,5 +255,5 @@ jobs:
 
 The Testcontainer worked without any additional setup. The case may be a bit different when using self-hosted runner, but it all narrows up to set correct permission for docker socket access.
 
-You can find the complete project and further details in the [repository](). It contains a sample CQRS application and series of tests for entity addition, listing, and removal. Without clearing the database each time most of them would fail due to data inconsistency.
+You can find the complete project and further details in the [repository](https://github.com/pbakun/efcore-respawn-tests). It contains a sample CQRS application and series of tests for entity addition, listing, and removal. Without clearing the database each time most of them would fail due to data inconsistency.
 
